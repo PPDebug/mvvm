@@ -16,18 +16,14 @@ export default class Observer{
             this.getter = this.parseGetter(expOrFn.trim());
         }
         this.data = this.get();
-
-        console.log("bind->", this.data, "exp->", this.expOrFn);
     }
 
 
     public update(){
         let data = this.get();
         let oldData = this.data;
-        console.log(this);
 
         if (data !== oldData) {
-            console.log(oldData, data);
             this.data = oldData;
             this.callback.call(this.vm, data, oldData);
         }

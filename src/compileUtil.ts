@@ -20,8 +20,7 @@ export default class CompileUtil {
             node.className = className + space + value;
         },
     
-        modelUpdater: function(node, value, oldValue) {
-            console.log(oldValue);
+        modelUpdater: function(node, value) {
             node.value = typeof value == 'undefined' ? '' : value;
         }
     }
@@ -54,7 +53,6 @@ export default class CompileUtil {
     static bind(node, vm, exp, dir) {
         let updaterfn = CompileUtil.updater[dir + 'Updater'];
         updaterfn && updaterfn(node, CompileUtil._getVMVal(vm, exp));
-        console.log(vm);
         vm.sub.attach(new Observer(vm, exp, (val, oldVal)=>{
             updaterfn && updaterfn(node, val, oldVal);
         }))

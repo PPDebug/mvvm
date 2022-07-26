@@ -35,7 +35,6 @@ export default class Compile {
             if(this.isElementNode(node)){
                 this.compile(node);
             } else if (this.isTextNode(node) && reg.test(text)) {
-                console.log(text);
                 this.compileText(node, RegExp.$1.trim());
             }
             if(node.childNodes && node.childNodes.length) {
