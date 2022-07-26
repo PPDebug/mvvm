@@ -12,14 +12,15 @@ interface Options {
 class MVVM{
     public $options : Options;
     public data: any;
-    public $watch: any;
+    public $watch: Function;
+    public $compile: Compile;
 
-    subs: Subject[];
+    sub: Subject;
 
     constructor(options: Options) {
         this.$options = options;
         this.data = this.$options.data;
-        this.subs = [];
+        this.sub = new Subject();
 
         this.init();
     };
@@ -32,9 +33,13 @@ class MVVM{
 
         // computed属性初始化
         this._initComputed();
-        // this.observe(this.data);
+        this.observe(this.data);
 
-        new Compile(this.$options.el, this);
+        this.$watch = function(key:any, cb:Function) {
+            this.sub.attach( new Observer(this, key, cb));
+        }
+
+        this.$compile = new Compile(this.$options.el || document.body, this);
 
     };
 
@@ -44,6 +49,9 @@ class MVVM{
             enumerable: true,
             get: ()=>{
                 return this.data[key];
+            },
+            set: (newVal: any)=>{
+                this.data[key] = newVal;
             }
         })
     };
@@ -60,16 +68,18 @@ class MVVM{
         })
     }
 
-    observe(data: Object) {
+    observe(data: any) {
+
+        if(!data || typeof data !== 'object') return 
+
         Object.keys(data).forEach((key: any)=> {
             this.defineProperty(data, key, data[key])
         })
     }
 
     private defineProperty(data: Object, key: any, val: any) {
-        let sub = new Subject();
-        this.subs.push(sub);
-        sub.attach(new Observer(val));
+        this.sub.attach(new Observer(data, key, ()=>{
+        }));
         this.observe(val);
         Object.defineProperty(data, key, {
             enumerable: true,
@@ -77,9 +87,9 @@ class MVVM{
             get: function() {
                 return val;
             },
-            set: function(newVal: any) {
+            set: (newVal: any)=>{
                 if (val === newVal) return;
-                sub.notify(newVal);
+                this.sub.notify();
                 val = newVal;
             }
         })

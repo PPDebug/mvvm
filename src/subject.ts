@@ -7,7 +7,7 @@ export default class Subject {
     }
 
     public attach(o: Observer){
-        let index = this.observers.findIndex(item => item.data===o.data);
+        let index = this.observers.findIndex(item => item.data===o.data && item.callback == o.callback);
         if (index>=0) return; 
         this.observers.push(o);
     }
@@ -18,9 +18,9 @@ export default class Subject {
         })
     }
 
-    public notify(newVal: any){
+    public notify(){
         this.observers.forEach(o => {
-            o.update(newVal);
+            o.update();
         })
     }
 

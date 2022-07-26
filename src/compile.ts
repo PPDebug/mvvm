@@ -51,7 +51,7 @@ export default class Compile {
             if (this.isDirective(attrName)) {
                 let exp = attr.value;
                 var dir = attrName.substring(2);
-                if (this.iseventDirectve(dir)) {
+                if (this.isEventDirective(dir)) {
                     CompileUtil.eventHandler(node, this.$vm, exp, dir);
                 } else {
                     CompileUtil[dir] && CompileUtil[dir](node, this.$vm, exp);
@@ -69,8 +69,8 @@ export default class Compile {
         return attr.indexOf("v-") == 0;
     }
 
-    private iseventDirectve(dir: any) {
-        return dir.indexOf('on') == 1;
+    private isEventDirective(dir: any) {
+        return dir.indexOf('on') == 0;
     }
 
     private isElementNode(node: any) {

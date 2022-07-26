@@ -14,8 +14,9 @@ afterAll(() => { // 可以换成 afterEach
 });
 
 let sub = new Subject();
+let callback = ()=>{};
 for(let i=0; i<10; i++) {
-    sub.attach(new Observer(1));
+    sub.attach(new Observer(1, "somedata", callback));
 }
 
 test("添加观察者时，应当去重", () => {

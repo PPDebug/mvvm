@@ -10,7 +10,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             filename: 'index.html',
             chunks: ['index'],
-            template: './demo/index.html'
+            template: './index.html'
         })
     ],
     resolve: {

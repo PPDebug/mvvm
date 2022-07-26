@@ -1,1 +1,3 @@
-export { MVVM } from "./mvvm";
+import { MVVM } from "./mvvm";
+
+export default MVVM;

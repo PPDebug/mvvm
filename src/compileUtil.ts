@@ -1,3 +1,5 @@
+import Observer from "./observer";
+
 export default class CompileUtil {
 
     static updater = {
@@ -19,7 +21,7 @@ export default class CompileUtil {
         },
     
         modelUpdater: function(node, value, oldValue) {
-            if (oldValue===null) oldValue==null;
+            console.log(oldValue);
             node.value = typeof value == 'undefined' ? '' : value;
         }
     }
@@ -31,11 +33,11 @@ export default class CompileUtil {
     }
 
     static html(node, vm, exp) {
-        CompileUtil.bind(node, vm, exp, "model");
+        CompileUtil.bind(node, vm, exp, "html");
     }
 
     static model(node, vm, exp) {
-        CompileUtil.bind(node, vm, exp, 'html');
+        CompileUtil.bind(node, vm, exp, 'model');
         let val = this._getVMVal(vm, exp);
         node.addEventListener('input', (e)=>{
             var newValue = e.target.value;
@@ -52,8 +54,10 @@ export default class CompileUtil {
     static bind(node, vm, exp, dir) {
         let updaterfn = CompileUtil.updater[dir + 'Updater'];
         updaterfn && updaterfn(node, CompileUtil._getVMVal(vm, exp));
-
-        console.log("TODO: finish the bind");
+        console.log(vm);
+        vm.sub.attach(new Observer(vm, exp, (val, oldVal)=>{
+            updaterfn && updaterfn(node, val, oldVal);
+        }))
     } 
 
     static eventHandler(node, vm, exp, dir) {
