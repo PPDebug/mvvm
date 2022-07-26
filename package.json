@@ -5,7 +5,7 @@
   "main": "./src/index.ts",
   "scripts": {
     "test": "jest --config jest.config.js",
-    "start": "webpack-dev-server --config ./webpack.dev.js",
+    "start": "webpack-dev-server --config ./webpack.dev.js"
   },
   "keywords": [],
   "author": "'pengpeng' <'501858681@qq.com'>",
