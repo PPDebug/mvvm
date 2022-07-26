@@ -1,1 +1,1 @@
-export { MVVM } from './mvvm'
+export { MVVM } from "./mvvm";
